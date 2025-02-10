@@ -10,8 +10,8 @@ function showSection(sectionId) {
 
 function connectDiscord() {
   const clientId = '1338468977130602526';  // Client ID شما
-  const redirectUri = 'https://x.com/MaeezyyyPRMR';  // URL بازگشتی شما
-  const scope = 'identify guilds guilds.members.read';  // دسترسی‌های مورد نیاز
+  const redirectUri = 'https://initia-hug-checker.vercel.app/';  // URL بازگشتی شما
+  const scope = 'guilds.channels.read guilds guilds.members.read';  // دسترسی‌های مورد نیاز
   const url = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${scope}`;
 
   // هدایت کاربر به دیسکورد
@@ -22,7 +22,7 @@ function connectDiscord() {
 function getAccessToken(code) {
   const clientId = '1338468977130602526';
   const clientSecret = 'fCWCwaZYP_BigjKZQXfLWj4n9iz1hYDt';  // Client Secret شما
-  const redirectUri = 'https://x.com/MaeezyyyPRMR';
+  const redirectUri = 'https://initia-hug-checker.vercel.app/';
 
   const url = 'https://discord.com/api/v10/oauth2/token';
   const data = {
@@ -63,7 +63,8 @@ function getUserInfo(accessToken) {
   .then(response => response.json())
   .then(data => {
     console.log('User Info:', data);
-    // می‌توانید اطلاعات کاربر را در صفحه نمایش دهید
+    // نمایش نام کاربر در صفحه
+    document.getElementById('discordResponse').textContent = `Welcome, ${data.username}!`;
   })
   .catch(error => {
     console.error('Error fetching user info:', error);
