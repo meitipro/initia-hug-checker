@@ -11,8 +11,13 @@ function showSection(sectionId) {
 function connectDiscord() {
   const clientId = '1338468977130602526';  // Client ID شما
   const redirectUri = 'https://initia-hug-checker.vercel.app/';  // URL بازگشتی شما
-  const scope = 'guilds.channels.read guilds guilds.members.read';  // دسترسی‌های مورد نیاز
+  const scope = 'guilds+guilds.members.read+identify+guilds.channels.read';  // اصلاح شده
   const url = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${scope}`;
+
+  // هدایت کاربر به دیسکورد
+  window.location.href = url;
+}
+
 
   // هدایت کاربر به دیسکورد
   window.location.href = url;
