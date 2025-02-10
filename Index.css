@@ -1,0 +1,130 @@
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #121212;
+  color: #fff;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: #1c1c1c;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.navbar .logo {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #1e90ff;
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+nav ul li {
+  margin-right: 30px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 1.1em;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+  color: #1e90ff;
+}
+
+.content {
+  padding: 50px;
+  background: linear-gradient(to bottom, #121212, #2c2c2c);
+}
+
+.section {
+  display: none;
+}
+
+.section.active {
+  display: block;
+}
+
+h2 {
+  text-align: center;
+  font-size: 2em;
+  margin-bottom: 30px;
+}
+
+.discord-connection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.connect-btn {
+  background-color: #1e90ff;
+  padding: 15px 30px;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  font-size: 1.1em;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.connect-btn:hover {
+  background-color: #0077cc;
+}
+
+.discord-response {
+  margin-top: 20px;
+  font-size: 1.2em;
+  color: #aaa;
+}
+
+.roles-list {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 30px;
+}
+
+.roles-list li {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #333;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
+}
+
+.roles-list li:hover {
+  transform: scale(1.05);
+  background-color: #444;
+}
+
+button {
+  background-color: #1e90ff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0077cc;
+}
