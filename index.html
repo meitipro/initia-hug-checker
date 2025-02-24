@@ -3,49 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mahdigh</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            text-align: center;
-            padding: 20px;
-        }
-        main {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        img {
-            max-width: 200px;
-            height: auto;
-            display: block;
-            margin: 0 auto;
-            border-radius: 50%;
-        }
-        footer {
-            text-align: center;
-            padding: 20px;
-        }
-    </style>
+    <title>John Doe - Professional Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <h1>My Name</h1>
-        <h2>Web Developer | Designer | Creator</h2>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
     </header>
     <main>
-        <img src="https://pbs.twimg.com/profile_images/1868987245564190720/UUX7Rv-T_400x400.jpg" alt="Profile Picture">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        <section id="home">
+            <h1>Welcome to My Professional Portfolio</h1>
+            <p>I'm John Doe, a web developer with a passion for creating beautiful and functional websites.</p>
+        </section>
+        <section id="about">
+            <h2>About Me</h2>
+            <p>With over 5 years of experience in web development, I specialize in front-end technologies like HTML, CSS, and JavaScript. I also have experience with back-end frameworks like Node.js and Express.</p>
+        </section>
+        <section id="portfolio">
+            <h2>Portfolio</h2>
+            <div class="portfolio-item">
+                <img src="project1.jpg" alt="Project 1">
+                <h3>Project 1</h3>
+                <p>A brief description of the project.</p>
+            </div>
+            <div class="portfolio-item">
+                <img src="project2.jpg" alt="Project 2">
+                <h3>Project 2</h3>
+                <p>A brief description of the project.</p>
+            </div>
+        </section>
+        <section id="contact">
+            <h2>Contact Me</h2>
+            <form>
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email">
+                <label for="message">Message:</label>
+                <textarea id="message" name="message"></textarea>
+                <button type="submit">Send</button>
+            </form>
+        </section>
     </main>
     <footer>
-        <a href="https://twitter.com/myprofile" target="_blank" rel="noopener noreferrer">Twitter</a> |
-        <a href="https://github.com/myprofile" target="_blank" rel="noopener noreferrer">GitHub</a> |
-        <a href="https://linkedin.com/in/myprofile" target="_blank" rel="noopener noreferrer">LinkedIn</a> |
-        <a href="mailto:myemail@example.com">Email</a>
+        <p>&copy; 2023 John Doe. All rights reserved.</p>
     </footer>
+    <script src="script.js"></script>
 </body>
 </html>
