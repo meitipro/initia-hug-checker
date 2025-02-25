@@ -3,107 +3,227 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slot Machine Game</title>
+    <title>Pro Slot Machine</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f0f0f0;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
             margin: 0;
+            overflow: hidden;
         }
 
         .slot-machine {
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
             text-align: center;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            width: 500px;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 20px;
         }
 
         .reels {
             display: flex;
             justify-content: center;
-            margin: 20px 0;
+            gap: 15px;
+            margin-bottom: 20px;
         }
 
         .reel {
             width: 100px;
             height: 100px;
-            background-color: #eee;
+            background: #f5f5f5;
+            border: 3px solid #444;
+            border-radius: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 40px;
-            margin: 0 10px;
-            border: 2px solid #333;
+            font-size: 50px;
+            overflow: hidden;
+            transition: all 0.1s ease;
+        }
+
+        .reel.spinning {
+            animation: spin 0.1s infinite linear;
+        }
+
+        @keyframes spin {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-100px); }
+        }
+
+        .controls {
+            margin: 20px 0;
+        }
+
+        input[type="number"] {
+            padding: 8px;
+            font-size: 16px;
+            width: 80px;
             border-radius: 5px;
+            border: 1px solid #ccc;
         }
 
         button {
-            padding: 10px 20px;
+            padding: 10px 25px;
             font-size: 18px;
-            background-color: #ff4444;
+            background: #ff4d4d;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background 0.3s;
         }
 
         button:hover {
-            background-color: #cc0000;
+            background: #cc0000;
+        }
+
+        button:disabled {
+            background: #999;
+            cursor: not-allowed;
+        }
+
+        #balance, #result {
+            font-size: 20px;
+            color: #333;
+            margin: 10px 0;
         }
 
         #result {
-            margin-top: 20px;
-            font-size: 20px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <div class="slot-machine">
-        <h1>Simple Slot Machine</h1>
+        <h1>Pro Slot Machine</h1>
         <div class="reels">
-            <div class="reel" id="reel1">?</div>
-            <div class="reel" id="reel2">?</div>
-            <div class="reel" id="reel3">?</div>
+            <div class="reel" id="reel1"><img src="https://via.placeholder.com/50?text=?" alt="Reel 1"></div>
+            <div class="reel" id="reel2"><img src="https://via.placeholder.com/50?text=?" alt="Reel 2"></div>
+            <div class="reel" id="reel3"><img src="https://via.placeholder.com/50?text=?" alt="Reel 3"></div>
         </div>
-        <button onclick="spin()">Spin</button>
-        <p id="result">Spin to play!</p>
+        <div class="controls">
+            <label>Bet: $<input type="number" id="betAmount" min="1" value="1"></label>
+            <button onclick="spin()">Spin</button>
+        </div>
+        <p id="balance">Balance: $1000</p>
+        <p id="result">Place your bet and spin!</p>
     </div>
 
     <script>
-        const symbols = ['🍒', '🍋', '🍊', '🍇', '💎', '🔔', '7'];
+        // Symbol data: 10 unique images (replace URLs with your own images)
+        const symbols = [
+            { id: 'cherry', src: 'https://via.placeholder.com/50?text=🍒', value: 2 },   // Common
+            { id: 'lemon', src: 'https://via.placeholder.com/50?text=🍋', value: 2 },    // Common
+            { id: 'orange', src: 'https://via.placeholder.com/50?text=🍊', value: 2 },   // Common
+            { id: 'grape', src: 'https://via.placeholder.com/50?text=🍇', value: 2 },    // Common
+            { id: 'diamond', src: 'https://via.placeholder.com/50?text=💎', value: 5 },  // Rare
+            { id: 'bell', src: 'https://via.placeholder.com/50?text=🔔', value: 5 },     // Rare
+            { id: 'star', src: 'https://via.placeholder.com/50?text=⭐', value: 5 },     // Rare
+            { id: 'seven', src: 'https://via.placeholder.com/50?text=7', value: 5 },     // Rare
+            { id: 'bar', src: 'https://via.placeholder.com/50?text=BAR', value: 10 },    // Jackpot
+            { id: 'wild', src: 'https://via.placeholder.com/50?text=W', value: 0 }       // Wild (substitutes any)
+        ];
+
+        let balance = 1000;
+        const reel1 = document.getElementById('reel1');
+        const reel2 = document.getElementById('reel2');
+        const reel3 = document.getElementById('reel3');
+        const result = document.getElementById('result');
+        const balanceDisplay = document.getElementById('balance');
+        const betInput = document.getElementById('betAmount');
+        const spinButton = document.querySelector('button');
+
+        // Placeholder for sound effects (add real audio files if available)
+        const spinSound = new Audio('https://www.soundjay.com/buttons/beep-01a.mp3'); // Replace with spin.mp3
+        const winSound = new Audio('https://www.soundjay.com/buttons/beep-02.mp3');   // Replace with win.mp3
 
         function getRandomSymbol() {
-            return symbols[Math.floor(Math.random() * symbols.length)];
+            const index = Math.floor(Math.random() * symbols.length);
+            return symbols[index];
+        }
+
+        function updateBalance() {
+            balanceDisplay.textContent = `Balance: $${balance}`;
+            if (balance < parseInt(betInput.value)) {
+                spinButton.disabled = true;
+                result.textContent = "Insufficient balance!";
+            } else {
+                spinButton.disabled = false;
+            }
         }
 
         function spin() {
-            const reel1 = document.getElementById('reel1');
-            const reel2 = document.getElementById('reel2');
-            const reel3 = document.getElementById('reel3');
-            const result = document.getElementById('result');
+            const bet = parseInt(betInput.value);
+            if (bet < 1 || isNaN(bet)) {
+                result.textContent = "Invalid bet amount!";
+                return;
+            }
+            if (bet > balance) {
+                result.textContent = "Not enough balance!";
+                return;
+            }
 
+            // Deduct bet and disable button during spin
+            balance -= bet;
+            updateBalance();
+            spinButton.disabled = true;
             result.textContent = "Spinning...";
-            
+            reel1.classList.add('spinning');
+            reel2.classList.add('spinning');
+            reel3.classList.add('spinning');
+            // spinSound.play(); // Uncomment with real audio
+
             setTimeout(() => {
-                const symbol1 = getRandomSymbol();
-                const symbol2 = getRandomSymbol();
-                const symbol3 = getRandomSymbol();
+                // Generate random symbols
+                const sym1 = getRandomSymbol();
+                const sym2 = getRandomSymbol();
+                const sym3 = getRandomSymbol();
 
-                reel1.textContent = symbol1;
-                reel2.textContent = symbol2;
-                reel3.textContent = symbol3;
+                reel1.innerHTML = `<img src="${sym1.src}" alt="${sym1.id}">`;
+                reel2.innerHTML = `<img src="${sym2.src}" alt="${sym2.id}">`;
+                reel3.innerHTML = `<img src="${sym3.src}" alt="${sym3.id}">`;
 
-                if (symbol1 === symbol2 && symbol2 === symbol3) {
-                    result.textContent = "Jackpot! You win!";
+                reel1.classList.remove('spinning');
+                reel2.classList.remove('spinning');
+                reel3.classList.remove('spinning');
+
+                // Calculate winnings
+                let winnings = 0;
+                if (sym1.id === sym2.id && sym2.id === sym3.id && sym1.id !== 'wild') {
+                    winnings = bet * sym1.value * 2; // Perfect match: double value
+                    result.textContent = `Jackpot! Won $${winnings}!`;
+                    // winSound.play(); // Uncomment with real audio
+                } else if (
+                    (sym1.id === sym2.id && sym3.id === 'wild') ||
+                    (sym1.id === sym3.id && sym2.id === 'wild') ||
+                    (sym2.id === sym3.id && sym1.id === 'wild') ||
+                    (sym1.id === 'wild' && sym2.id === sym3.id) ||
+                    (sym2.id === 'wild' && sym1.id === sym3.id) ||
+                    (sym3.id === 'wild' && sym1.id === sym2.id)
+                ) {
+                    const baseSymbol = [sym1, sym2, sym3].find(s => s.id !== 'wild');
+                    winnings = bet * baseSymbol.value; // Wild match: base value
+                    result.textContent = `Wild Win! Won $${winnings}!`;
+                    // winSound.play(); // Uncomment with real audio
                 } else {
                     result.textContent = "Try again!";
                 }
-            }, 1000);
+
+                balance += winnings;
+                updateBalance();
+                spinButton.disabled = false;
+            }, 1500); // 1.5s spin duration
         }
     </script>
 </body>
