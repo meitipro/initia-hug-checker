@@ -127,18 +127,27 @@
     </div>
 
     <script>
-        // Symbol data with your first 8 images + wild and jackpot
+        // Symbol data with all 19 images (no wild or jackpot)
         const symbols = [
             { id: 'sym1', src: 'https://pbs.twimg.com/profile_images/1868515610491248640/d2_DFxeq_400x400.png', value: 2 },  // Common
             { id: 'sym2', src: 'https://pbs.twimg.com/profile_images/1766231170881101825/G0hzHCPK_400x400.jpg', value: 2 },  // Common
             { id: 'sym3', src: 'https://pbs.twimg.com/profile_images/1881394003716784128/NexEnBMq_400x400.jpg', value: 2 },  // Common
             { id: 'sym4', src: 'https://pbs.twimg.com/profile_images/1871226178847080448/t-vg_Jq4_400x400.jpg', value: 2 },  // Common
-            { id: 'sym5', src: 'https://pbs.twimg.com/profile_images/1841116021244997643/N8kaEo57_400x400.png', value: 5 },  // Rare
-            { id: 'sym6', src: 'https://pbs.twimg.com/profile_images/1893002061043662848/Zbh4EpSO_400x400.jpg', value: 5 },  // Rare
-            { id: 'sym7', src: 'https://pbs.twimg.com/profile_images/1493151442038931457/fbgMa9JZ_400x400.jpg', value: 5 },  // Rare
-            { id: 'sym8', src: 'https://pbs.twimg.com/profile_images/1868931663499030528/MVdzR4fp_400x400.jpg', value: 5 },  // Rare
-            { id: 'jackpot', src: 'https://via.placeholder.com/50?text=💰', value: 10 },                                  // Jackpot
-            { id: 'wild', src: 'https://via.placeholder.com/50?text=W', value: 0 }                                       // Wild
+            { id: 'sym5', src: 'https://pbs.twimg.com/profile_images/1841116021244997643/N8kaEo57_400x400.png', value: 2 },  // Common
+            { id: 'sym6', src: 'https://pbs.twimg.com/profile_images/1893002061043662848/Zbh4EpSO_400x400.jpg', value: 2 },  // Common
+            { id: 'sym7', src: 'https://pbs.twimg.com/profile_images/1493151442038931457/fbgMa9JZ_400x400.jpg', value: 2 },  // Common
+            { id: 'sym8', src: 'https://pbs.twimg.com/profile_images/1868931663499030528/MVdzR4fp_400x400.jpg', value: 2 },  // Common
+            { id: 'sym9', src: 'https://pbs.twimg.com/profile_images/1856718642924195841/J_py3cWI_400x400.jpg', value: 2 },  // Common
+            { id: 'sym10', src: 'https://pbs.twimg.com/profile_images/1687464022847713280/b0a-jAmz_400x400.jpg', value: 2 }, // Common
+            { id: 'sym11', src: 'https://pbs.twimg.com/profile_images/1881349702224150530/HNO2ui50_400x400.jpg', value: 5 }, // Rare
+            { id: 'sym12', src: 'https://pbs.twimg.com/profile_images/1730636092364517378/vY7AUjuW_400x400.jpg', value: 5 }, // Rare
+            { id: 'sym13', src: 'https://pbs.twimg.com/profile_images/1787762644121722880/lk9Rf1uR_400x400.jpg', value: 5 }, // Rare
+            { id: 'sym14', src: 'https://pbs.twimg.com/profile_images/1876427354051891204/w3RkwBQb_400x400.jpg', value: 5 }, // Rare
+            { id: 'sym15', src: 'https://pbs.twimg.com/profile_images/1882323919664979968/Rp1KYuaT_400x400.jpg', value: 5 }, // Rare
+            { id: 'sym16', src: 'https://pbs.twimg.com/profile_images/1886393558795513856/ZuXYVnfL_400x400.png', value: 5 }, // Rare
+            { id: 'sym17', src: 'https://pbs.twimg.com/profile_images/1876849240774742016/4TS_eyeB_400x400.jpg', value: 5 }, // Rare
+            { id: 'sym18', src: 'https://pbs.twimg.com/profile_images/1792929404470845440/iOj9mI_l_400x400.jpg', value: 5 }, // Rare
+            { id: 'sym19', src: 'https://pbs.twimg.com/profile_images/1853652944517840896/yebABmIS_400x400.jpg', value: 5 }  // Rare
         ];
 
         let balance = 1000;
@@ -204,23 +213,11 @@
                 reel2.classList.remove('spinning');
                 reel3.classList.remove('spinning');
 
-                // Calculate winnings
+                // Calculate winnings (only exact matches)
                 let winnings = 0;
-                if (sym1.id === sym2.id && sym2.id === sym3.id && sym1.id !== 'wild') {
-                    winnings = bet * sym1.value * 2; // Perfect match: double value
-                    result.textContent = `Jackpot! Won ${winnings} INIT!`;
-                    // winSound.play(); // Uncomment with real audio
-                } else if (
-                    (sym1.id === sym2.id && sym3.id === 'wild') ||
-                    (sym1.id === sym3.id && sym2.id === 'wild') ||
-                    (sym2.id === sym3.id && sym1.id === 'wild') ||
-                    (sym1.id === 'wild' && sym2.id === sym3.id) ||
-                    (sym2.id === 'wild' && sym1.id === sym3.id) ||
-                    (sym3.id === 'wild' && sym1.id === sym2.id)
-                ) {
-                    const baseSymbol = [sym1, sym2, sym3].find(s => s.id !== 'wild');
-                    winnings = bet * baseSymbol.value; // Wild match: base value
-                    result.textContent = `Wild Win! Won ${winnings} INIT!`;
+                if (sym1.id === sym2.id && sym2.id === sym3.id) {
+                    winnings = bet * sym1.value * 2; // Double value for three matches
+                    result.textContent = `You Won ${winnings} INIT!`;
                     // winSound.play(); // Uncomment with real audio
                 } else {
                     result.textContent = "Try again!";
