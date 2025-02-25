@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pro Slot Machine with INIT</title>
+    <title>INIT Slot Machine</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -11,24 +11,42 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
             margin: 0;
             overflow: hidden;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://pbs.twimg.com/profile_images/1868515610491248640/d2_DFxeq_400x400.png') no-repeat center center;
+            background-size: 50%; /* Adjusted for beauty */
+            opacity: 0.2; /* Subtle overlay */
+            z-index: -1;
+            filter: blur(5px); /* Soft blur for elegance */
         }
 
         .slot-machine {
-            background: #fff;
+            background: rgba(255, 255, 255, 0.9); /* Semi-transparent white for contrast */
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
             text-align: center;
             width: 500px;
+            backdrop-filter: blur(10px); /* Glass effect */
         }
 
         h1 {
             font-size: 28px;
             color: #333;
             margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         .reels {
@@ -71,14 +89,6 @@
             margin: 20px 0;
         }
 
-        input[type="number"] {
-            padding: 8px;
-            font-size: 16px;
-            width: 80px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
         button {
             padding: 10px 25px;
             font-size: 18px;
@@ -112,22 +122,21 @@
 </head>
 <body>
     <div class="slot-machine">
-        <h1>Pro Slot Machine</h1>
+        <h1>INIT Slot Machine</h1>
         <div class="reels">
             <div class="reel" id="reel1"><img src="https://via.placeholder.com/50?text=?" alt="Reel 1"></div>
             <div class="reel" id="reel2"><img src="https://via.placeholder.com/50?text=?" alt="Reel 2"></div>
             <div class="reel" id="reel3"><img src="https://via.placeholder.com/50?text=?" alt="Reel 3"></div>
         </div>
         <div class="controls">
-            <label>Bet: <input type="number" id="betAmount" min="1" value="1"> INIT</label>
-            <button onclick="spin()">Spin</button>
+            <button onclick="spin()">Spin (2.5 INIT)</button>
         </div>
-        <p id="balance">Balance: 1000 INIT</p>
-        <p id="result">Place your bet and spin!</p>
+        <p id="balance">Balance: 50 INIT</p>
+        <p id="result">Spin to play!</p>
     </div>
 
     <script>
-        // Symbol data with all 19 images (no wild or jackpot)
+        // Symbol data with all 19 images
         const symbols = [
             { id: 'sym1', src: 'https://pbs.twimg.com/profile_images/1868515610491248640/d2_DFxeq_400x400.png', value: 2 },  // Common
             { id: 'sym2', src: 'https://pbs.twimg.com/profile_images/1766231170881101825/G0hzHCPK_400x400.jpg', value: 2 },  // Common
@@ -150,13 +159,13 @@
             { id: 'sym19', src: 'https://pbs.twimg.com/profile_images/1853652944517840896/yebABmIS_400x400.jpg', value: 5 }  // Rare
         ];
 
-        let balance = 1000;
+        let balance = 50;
+        const spinCost = 2.5;
         const reel1 = document.getElementById('reel1');
         const reel2 = document.getElementById('reel2');
         const reel3 = document.getElementById('reel3');
         const result = document.getElementById('result');
         const balanceDisplay = document.getElementById('balance');
-        const betInput = document.getElementById('betAmount');
         const spinButton = document.querySelector('button');
 
         // Placeholder for sound effects (add real audio files if available)
@@ -169,8 +178,8 @@
         }
 
         function updateBalance() {
-            balanceDisplay.textContent = `Balance: ${balance} INIT`;
-            if (balance < parseInt(betInput.value)) {
+            balanceDisplay.textContent = `Balance: ${balance.toFixed(2)} INIT`;
+            if (balance < spinCost) {
                 spinButton.disabled = true;
                 result.textContent = "Insufficient balance!";
             } else {
@@ -179,18 +188,13 @@
         }
 
         function spin() {
-            const bet = parseInt(betInput.value);
-            if (bet < 1 || isNaN(bet)) {
-                result.textContent = "Invalid bet amount!";
-                return;
-            }
-            if (bet > balance) {
+            if (balance < spinCost) {
                 result.textContent = "Not enough balance!";
                 return;
             }
 
-            // Deduct bet and disable button during spin
-            balance -= bet;
+            // Deduct spin cost and disable button during spin
+            balance -= spinCost;
             updateBalance();
             spinButton.disabled = true;
             result.textContent = "Spinning...";
@@ -200,10 +204,21 @@
             // spinSound.play(); // Uncomment with real audio
 
             setTimeout(() => {
-                // Generate random symbols
-                const sym1 = getRandomSymbol();
-                const sym2 = getRandomSymbol();
-                const sym3 = getRandomSymbol();
+                let sym1, sym2, sym3;
+                const winChance = Math.random();
+                
+                // 34.75% chance to force a win (three matching symbols)
+                if (winChance <= 0.3475) {
+                    const winningSymbol = getRandomSymbol();
+                    sym1 = winningSymbol;
+                    sym2 = winningSymbol;
+                    sym3 = winningSymbol;
+                } else {
+                    // Random roll with no guaranteed match
+                    sym1 = getRandomSymbol();
+                    sym2 = getRandomSymbol();
+                    sym3 = getRandomSymbol();
+                }
 
                 reel1.innerHTML = `<img src="${sym1.src}" alt="${sym1.id}">`;
                 reel2.innerHTML = `<img src="${sym2.src}" alt="${sym2.id}">`;
@@ -216,8 +231,8 @@
                 // Calculate winnings (only exact matches)
                 let winnings = 0;
                 if (sym1.id === sym2.id && sym2.id === sym3.id) {
-                    winnings = bet * sym1.value * 2; // Double value for three matches
-                    result.textContent = `You Won ${winnings} INIT!`;
+                    winnings = spinCost * sym1.value * 2; // Double value for three matches
+                    result.textContent = `You Won ${winnings.toFixed(2)} INIT!`;
                     // winSound.play(); // Uncomment with real audio
                 } else {
                     result.textContent = "Try again!";
