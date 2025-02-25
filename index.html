@@ -138,7 +138,7 @@
     <script>
         // Symbol data with all 19 images
         const symbols = [
-            { id: 'sym1', src: 'https://pbs.twimg.com/profile_images/1868515610491248640/d2_DFxeq_400x400.png', value: 2 },  // Common
+            { id: 'sym1', src: 'https://pbs.twimg.com/profile_images/1868515610491248640/d2_DFxeq_400x400.png', value: 2 },  // Common (Special: 1000 INIT jackpot)
             { id: 'sym2', src: 'https://pbs.twimg.com/profile_images/1766231170881101825/G0hzHCPK_400x400.jpg', value: 2 },  // Common
             { id: 'sym3', src: 'https://pbs.twimg.com/profile_images/1881394003716784128/NexEnBMq_400x400.jpg', value: 2 },  // Common
             { id: 'sym4', src: 'https://pbs.twimg.com/profile_images/1871226178847080448/t-vg_Jq4_400x400.jpg', value: 2 },  // Common
@@ -231,8 +231,13 @@
                 // Calculate winnings (only exact matches)
                 let winnings = 0;
                 if (sym1.id === sym2.id && sym2.id === sym3.id) {
-                    winnings = spinCost * sym1.value * 2; // Double value for three matches
-                    result.textContent = `You Won ${winnings.toFixed(2)} INIT!`;
+                    if (sym1.id === 'sym1') {
+                        winnings = 1000; // Special jackpot for three sym1
+                        result.textContent = `JACKPOT! Won ${winnings.toFixed(2)} INIT!`;
+                    } else {
+                        winnings = spinCost * sym1.value * 2; // Normal win: double value for three matches
+                        result.textContent = `You Won ${winnings.toFixed(2)} INIT!`;
+                    }
                     // winSound.play(); // Uncomment with real audio
                 } else {
                     result.textContent = "Try again!";
