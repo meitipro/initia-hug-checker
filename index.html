@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pro Slot Machine with Custom Images</title>
+    <title>Pro Slot Machine with INIT</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -119,24 +119,24 @@
             <div class="reel" id="reel3"><img src="https://via.placeholder.com/50?text=?" alt="Reel 3"></div>
         </div>
         <div class="controls">
-            <label>Bet: $<input type="number" id="betAmount" min="1" value="1"></label>
+            <label>Bet: <input type="number" id="betAmount" min="1" value="1"> INIT</label>
             <button onclick="spin()">Spin</button>
         </div>
-        <p id="balance">Balance: $1000</p>
+        <p id="balance">Balance: 1000 INIT</p>
         <p id="result">Place your bet and spin!</p>
     </div>
 
     <script>
-        // Symbol data with your 8 images + wild and jackpot
+        // Symbol data with your first 8 images + wild and jackpot
         const symbols = [
             { id: 'sym1', src: 'https://pbs.twimg.com/profile_images/1868515610491248640/d2_DFxeq_400x400.png', value: 2 },  // Common
-            { id: 'sym2', src: 'https://pbs.twimg.com/profile_images/1882323919664979968/Rp1KYuaT_400x400.jpg', value: 2 },  // Common
-            { id: 'sym3', src: 'https://pbs.twimg.com/profile_images/1687464022847713280/b0a-jAmz_400x400.jpg', value: 2 },  // Common
-            { id: 'sym4', src: 'https://pbs.twimg.com/profile_images/1881349702224150530/HNO2ui50_400x400.jpg', value: 2 },  // Common
-            { id: 'sym5', src: 'https://pbs.twimg.com/profile_images/1747840734475014144/16mUeNNN_400x400.jpg', value: 5 },  // Rare
-            { id: 'sym6', src: 'https://pbs.twimg.com/profile_images/1766231170881101825/G0hzHCPK_400x400.jpg', value: 5 },  // Rare
-            { id: 'sym7', src: 'https://pbs.twimg.com/profile_images/1730636092364517378/vY7AUjuW_400x400.jpg', value: 5 },  // Rare
-            { id: 'sym8', src: 'https://pbs.twimg.com/profile_images/1787762644121722880/lk9Rf1uR_400x400.jpg', value: 5 },  // Rare
+            { id: 'sym2', src: 'https://pbs.twimg.com/profile_images/1766231170881101825/G0hzHCPK_400x400.jpg', value: 2 },  // Common
+            { id: 'sym3', src: 'https://pbs.twimg.com/profile_images/1881394003716784128/NexEnBMq_400x400.jpg', value: 2 },  // Common
+            { id: 'sym4', src: 'https://pbs.twimg.com/profile_images/1871226178847080448/t-vg_Jq4_400x400.jpg', value: 2 },  // Common
+            { id: 'sym5', src: 'https://pbs.twimg.com/profile_images/1841116021244997643/N8kaEo57_400x400.png', value: 5 },  // Rare
+            { id: 'sym6', src: 'https://pbs.twimg.com/profile_images/1893002061043662848/Zbh4EpSO_400x400.jpg', value: 5 },  // Rare
+            { id: 'sym7', src: 'https://pbs.twimg.com/profile_images/1493151442038931457/fbgMa9JZ_400x400.jpg', value: 5 },  // Rare
+            { id: 'sym8', src: 'https://pbs.twimg.com/profile_images/1868931663499030528/MVdzR4fp_400x400.jpg', value: 5 },  // Rare
             { id: 'jackpot', src: 'https://via.placeholder.com/50?text=💰', value: 10 },                                  // Jackpot
             { id: 'wild', src: 'https://via.placeholder.com/50?text=W', value: 0 }                                       // Wild
         ];
@@ -160,7 +160,7 @@
         }
 
         function updateBalance() {
-            balanceDisplay.textContent = `Balance: $${balance}`;
+            balanceDisplay.textContent = `Balance: ${balance} INIT`;
             if (balance < parseInt(betInput.value)) {
                 spinButton.disabled = true;
                 result.textContent = "Insufficient balance!";
@@ -208,7 +208,7 @@
                 let winnings = 0;
                 if (sym1.id === sym2.id && sym2.id === sym3.id && sym1.id !== 'wild') {
                     winnings = bet * sym1.value * 2; // Perfect match: double value
-                    result.textContent = `Jackpot! Won $${winnings}!`;
+                    result.textContent = `Jackpot! Won ${winnings} INIT!`;
                     // winSound.play(); // Uncomment with real audio
                 } else if (
                     (sym1.id === sym2.id && sym3.id === 'wild') ||
@@ -220,7 +220,7 @@
                 ) {
                     const baseSymbol = [sym1, sym2, sym3].find(s => s.id !== 'wild');
                     winnings = bet * baseSymbol.value; // Wild match: base value
-                    result.textContent = `Wild Win! Won $${winnings}!`;
+                    result.textContent = `Wild Win! Won ${winnings} INIT!`;
                     // winSound.play(); // Uncomment with real audio
                 } else {
                     result.textContent = "Try again!";
