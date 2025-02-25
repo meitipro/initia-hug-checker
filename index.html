@@ -4,7 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Slot Machine Game</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+
+        .slot-machine {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .reels {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .reel {
+            width: 100px;
+            height: 100px;
+            background-color: #eee;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            margin: 0 10px;
+            border: 2px solid #333;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #cc0000;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+    </style>
 </head>
 <body>
     <div class="slot-machine">
@@ -17,6 +73,38 @@
         <button onclick="spin()">Spin</button>
         <p id="result">Spin to play!</p>
     </div>
-    <script src="script.js"></script>
+
+    <script>
+        const symbols = ['🍒', '🍋', '🍊', '🍇', '💎', '🔔', '7'];
+
+        function getRandomSymbol() {
+            return symbols[Math.floor(Math.random() * symbols.length)];
+        }
+
+        function spin() {
+            const reel1 = document.getElementById('reel1');
+            const reel2 = document.getElementById('reel2');
+            const reel3 = document.getElementById('reel3');
+            const result = document.getElementById('result');
+
+            result.textContent = "Spinning...";
+            
+            setTimeout(() => {
+                const symbol1 = getRandomSymbol();
+                const symbol2 = getRandomSymbol();
+                const symbol3 = getRandomSymbol();
+
+                reel1.textContent = symbol1;
+                reel2.textContent = symbol2;
+                reel3.textContent = symbol3;
+
+                if (symbol1 === symbol2 && symbol2 === symbol3) {
+                    result.textContent = "Jackpot! You win!";
+                } else {
+                    result.textContent = "Try again!";
+                }
+            }, 1000);
+        }
+    </script>
 </body>
 </html>
